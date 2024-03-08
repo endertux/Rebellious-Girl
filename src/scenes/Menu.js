@@ -14,10 +14,10 @@ class Menu extends Phaser.Scene {
         this.add.sprite(500, 300, 'title');
 
         //Text for screen
-        let startText = this.add.text(960,540, 'Press ENTER to Start', {
+        let startText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, 'Press ENTER to Start', {
             font: '40px Arial',
-            fill: '#ffffff'
-        })
+            fill: '#FF69B4'
+        }).setOrigin(0.5, -3);
 
         // define keys
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)

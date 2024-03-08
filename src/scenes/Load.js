@@ -9,7 +9,10 @@ class Load extends Phaser.Scene {
         this.load.image('miku', 'assets/Miku.png');
         this.load.image('menuBackground', 'assets/menu_screen.png');
         this.load.image('clam', 'assets/clam.png');
-    
+        this.load.spritesheet('mikuPunch', './assets/Miku_anims.png', {
+            frameWidth: 462,
+            frameHeight: 510
+        })
     }
 
     create() {
