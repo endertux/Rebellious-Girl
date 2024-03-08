@@ -60,7 +60,7 @@ class Play extends Phaser.Scene {
         }
 
         // check for collisions
-        this.physics.world.collide(this.miku, this.clams, this.cmikuCollision, null, this)
+        this.physics.world.collide(this.miku, this.clams, this.hitClam, null, this)
         
     }
 
