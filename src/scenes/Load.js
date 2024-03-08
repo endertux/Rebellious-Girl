@@ -13,6 +13,10 @@ class Load extends Phaser.Scene {
             frameWidth: 462,
             frameHeight: 510
         })
+
+        // load audio
+        this.load.audio('hit', './assets/SFX/263514__makofox__dm_punch-04.ogg')
+            // https://freesound.org/people/MakoFox/sounds/263514/
     }
 
     create() {

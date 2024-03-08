@@ -57,6 +57,9 @@ class Play extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(this.spaceBar)) {
             this.knockUpClosetClam();
             this.miku.anims.play('punch');
+
+            // play punch sound
+            this.sound.play('hit')
         }
 
         // check for collisions
