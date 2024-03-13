@@ -20,6 +20,18 @@ class Load extends Phaser.Scene {
     }
 
     create() {
+                // miku animations
+                this.anims.create ({
+                    key: 'punch',
+                    frameRate: 6,
+                    repeat: 0,
+                    frames: this.anims.generateFrameNumbers('mikuPunch', {
+                        start: 1,
+                        end: 0
+                    })
+        
+                })
         this.scene.start('menuScene');
+
     }
 }

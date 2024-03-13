@@ -37,17 +37,6 @@ class Play extends Phaser.Scene {
         //overlap detection for miku and clam
         this.physics.add.overlap(this.miku, this.clams, this.hitClam, null, this);
 
-        // miku animations
-        this.anims.create({
-            key: 'punch',
-            frameRate: 6,
-            repeat: 0,
-            frames: this.anims.generateFrameNumbers('mikuPunch', {
-                start: 1,
-                end: 0
-            })
-        })
-
         //spacebar for miku to knock out clams
         this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     }
