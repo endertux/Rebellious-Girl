@@ -44,16 +44,27 @@ class Play extends Phaser.Scene {
     update() {
         //check if spacebar is clicked to knock clams
         if(Phaser.Input.Keyboard.JustDown(this.spaceBar)) {
+            console.log("spacebar hit!")
+           let closestClam = this.findClosetClam()
+           if (closestClam && Phaser.Math.Distance.Between(this.miku.x, this.miku.y, closestClam.x, closestClam.y) < 100) {
             this.knockUpClosetClam();
-            this.miku.anims.play('punch');
+           }
 
-            // play punch sound
-            this.sound.play('hit')
+           this.miku.anims.play('punch');
+
+           // play punch sound
+           this.sound.play('hit')
         }
 
         // check for collisions
         this.physics.world.collide(this.miku, this.clams, this.hitClam, null, this)
         
+    }
+
+    clamCollision(miku, clam) {
+        clam.destroyed = true
+
+
     }
 
     spawnClam() {
@@ -68,7 +79,7 @@ class Play extends Phaser.Scene {
     hitClam(miku,clam) {
         //when clam hits miku go to credit scene
         console.log("going to credit scene");
-        this.scene.start('creditsScene');
+        this.scene.start('EndScene');
     }
 
     knockUpClosetClam() {
