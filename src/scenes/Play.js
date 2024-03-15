@@ -44,7 +44,7 @@ class Play extends Phaser.Scene {
     update() {
         //check if spacebar is clicked to knock clams
         if(Phaser.Input.Keyboard.JustDown(this.spaceBar)) {
-            console.log("spacebar hit!")
+            //console.log("spacebar hit!")
            let closestClam = this.findClosetClam()
            if (closestClam && Phaser.Math.Distance.Between(this.miku.x, this.miku.y, closestClam.x, closestClam.y) < 100) {
             this.knockUpClosetClam();
