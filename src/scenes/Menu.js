@@ -11,7 +11,7 @@ class Menu extends Phaser.Scene {
 
     create() {
         // title screen
-        this.add.sprite(500, 300, 'title');
+        this.add.sprite(0, 0, 'title').setOrigin(0, 0);
 
         //Text for screen
         let startText = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY, 'Press ENTER to Start', {
