@@ -6,6 +6,7 @@ class Load extends Phaser.Scene {
     preload() {
         //load images
         this.load.image('playBackground', 'assets/play_bg.png');
+        this.load.image('creditsBG', 'assets/credits_bg.png');
         this.load.image('miku', 'assets/Miku.png');
         this.load.image('menuBackground', 'assets/menu_screen.png');
         this.load.image('clam', 'assets/clam.png');
@@ -14,9 +15,8 @@ class Load extends Phaser.Scene {
             frameHeight: 510
         })
 
-        // load audio
+        //   // https://freesound.org/people/MakoFox/sounds/263514/
         this.load.audio('hit', './assets/SFX/263514__makofox__dm_punch-04.ogg')
-            // https://freesound.org/people/MakoFox/sounds/263514/
     }
 
     create() {

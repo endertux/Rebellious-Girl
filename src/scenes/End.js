@@ -10,15 +10,21 @@ class End extends Phaser.Scene {
     create() {
         
         this.cameras.main.setBackgroundColor('#000000');
-        //adds text
-        this.add.text(this.sys.game.config.width / 2, this.sys.game.config.height/2, 'You have died to a CLAM\n Click M to go to Menu', {
+
+        let baseY = this.sys.game.config.height / 2 -50;
+
+        let verticalSpacing = 60;
+        
+        const textConfig = {
             font: '40px Arial',
             fill: '#FF69B4',
-            align: 'center'
-        }).setOrigin(0.5, 0.5)
-        //defines M key as an input for the player to press 
+            align: 'center' 
+        };
+        this.add.text(this.sys.game.config.width / 2, baseY, 'You have died', textConfig).setOrigin(0.5,0.5);
+        this.add.text(this.sys.game.config.width / 2, baseY +verticalSpacing, 'Click M to go to Menu', textConfig).setOrigin(0.5,0.5);
+        this.add.text(this.sys.game.config.width / 2, baseY + 2* verticalSpacing, 'Click right ARROW to go to Credits', textConfig).setOrigin(0.5,0.5);
+
         let mKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
-        //if M is pressed it starts menu scene
         mKey.on('down', () => {
             this.scene.start('menuScene');
         });
@@ -26,6 +32,6 @@ class End extends Phaser.Scene {
         let rightArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         rightArrow.on('down', () => {
             this.scene.start('creditsScene');
-        })
+        });
     }
 }
