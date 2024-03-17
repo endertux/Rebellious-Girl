@@ -11,7 +11,7 @@ class Play extends Phaser.Scene {
         this.add.sprite(0, 0,'playBackground').setOrigin(0, 0);
 
         //add miku onto right side of screen
-        this.miku = this.physics.add.sprite(this.sys.game.config.width - 100, this.sys.game.config.height / 2, 'miku');
+        this.miku = this.physics.add.sprite(this.sys.game.config.width - 100, this.sys.game.config.height / 2, 'mikuPunch');
 
         // set scale to miku
         this.miku.setScale(0.3);
@@ -78,7 +78,7 @@ class Play extends Phaser.Scene {
 
     hitClam(miku,clam) {
         //when clam hits miku go to credit scene
-        console.log("going to credit scene");
+        // console.log("going to credit scene");
         this.scene.start('EndScene');
     }
 
