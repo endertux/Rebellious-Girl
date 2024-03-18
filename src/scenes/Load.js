@@ -17,6 +17,11 @@ class Load extends Phaser.Scene {
             frameHeight: 510
         })
 
+        this.load.spritesheet('sadMiku', 'assets/miku_anims_sad.png', {
+            frameWidth: 462,
+            frameHeight: 510
+        })
+
         // https://freesound.org/people/MakoFox/sounds/263514/
         this.load.audio('hit', './assets/SFX/263514__makofox__dm_punch-04.ogg')
         // https://pixabay.com/music/cartoons-anime-beginings-139797/

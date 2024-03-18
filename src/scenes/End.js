@@ -4,23 +4,26 @@ class End extends Phaser.Scene {
     }
 
     create() {
-        
-        this.cameras.main.setBackgroundColor('#000000');
-
-        let baseY = this.sys.game.config.height / 2 -50;
-
-        let verticalSpacing = 60;
-        
-        const textConfig = {
-            font: '40px Arial',
-            fill: '#FF69B4',
-            align: 'center' 
-        };
-        this.add.text(this.sys.game.config.width / 2, baseY, 'You have died', textConfig).setOrigin(0.5,0.5);
-        this.add.text(this.sys.game.config.width / 2, baseY +verticalSpacing, 'Click M to go to Menu', textConfig).setOrigin(0.5,0.5);
-        this.add.text(this.sys.game.config.width / 2, baseY + 2* verticalSpacing, 'Click right ARROW to go to Credits', textConfig).setOrigin(0.5,0.5);
-
+        //game over art
         this.add.sprite(0, 0,'gameover').setOrigin(0, 0);
+        
+          //add crying miku
+          this.miku = this.physics.add.sprite(this.sys.game.config.width - 500, this.sys.game.config.height / 1.5, 'sadMiku');
+
+        // set scale to miku
+        this.miku.setScale(0.3);
+        
+        // miku cry sprite anims
+        this.anims.create({
+             key: 'cry',
+             frameRate: 6,
+                repeat: -1,
+                frames: this.anims.generateFrameNumbers('sadMiku', {
+                start: 1,
+                end: 0
+        })
+    })
+    this.miku.anims.play('cry');
 
         let mKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
         mKey.on('down', () => {
