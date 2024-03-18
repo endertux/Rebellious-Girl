@@ -33,4 +33,4 @@ let borderUISize = game.config.height / 15
 let borderPadding = borderUISize / 3
 
 // reserve keys
-let keyENTER
+let keyENTER, keySPACE, keyLEFT, keyRIGHT, KeyUP, keyJ

@@ -3,10 +3,6 @@ class End extends Phaser.Scene {
         super("EndScene");
     }
 
-    preload() {
-
-    }
-
     create() {
         
         this.cameras.main.setBackgroundColor('#000000');

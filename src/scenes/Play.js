@@ -3,22 +3,22 @@ class Play extends Phaser.Scene {
         super("playScene");
     }
 
-    init() {
-
-    }
-
     create() {
         this.add.sprite(0, 0,'playBackground').setOrigin(0, 0);
 
         //add miku onto right side of screen
-        this.miku = this.physics.add.sprite(this.sys.game.config.width - 100, this.sys.game.config.height / 2, 'mikuPunch');
+        this.miku = this.physics.add.sprite(this.sys.game.config.width - 100, 300, 'mikuPunch')
 
+       
         // set scale to miku
         this.miku.setScale(0.3);
 
         // hit box size
         this.miku.body.setSize(80, 100);
         this.miku.body.setOffset(200, 150);
+        
+        this.miku.setGravityY(0);
+        this.miku.setCollideWorldBounds(true);
 
         // add clams
         this.clams = this.physics.add.group({
@@ -26,45 +26,60 @@ class Play extends Phaser.Scene {
         });
 
 
-        //timer event to spawn clams
-        this.time.addEvent({ 
-            delay: 2000,
-            callback: this.spawnClam,
-            callbackScope: this,
-            loop:true
+        // add bananas
+        this.bananas = this.physics.add.group({
+            velocityX: 150
         });
+
+        this.spawnClamNext = true;
+
+        //timer event to alternate spawns
+        this.time.addEvent({
+            delay: 2000,
+            callback: this.alternateSpawn,
+            callbackScope: this,
+            loop: true
+        })
+
 
         //overlap detection for miku and clam
         this.physics.add.overlap(this.miku, this.clams, this.hitClam, null, this);
+        // overlap for bananas
+        this.physics.add.overlap(this.miku, this.bananas, this.jumpBanana, null, this)
 
         //spacebar for miku to knock out clams
         this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        // J key to jump
+        this.jumpKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
+
     }
 
     update() {
         //check if spacebar is clicked to knock clams
-        if(Phaser.Input.Keyboard.JustDown(this.spaceBar)) {
-            //console.log("spacebar hit!")
-           let closestClam = this.findClosetClam()
-           if (closestClam && Phaser.Math.Distance.Between(this.miku.x, this.miku.y, closestClam.x, closestClam.y) < 100) {
-            this.knockUpClosetClam();
-           }
-
-           this.miku.anims.play('punch');
-
+        if(Phaser.Input.Keyboard.JustDown(this.spaceBar)) {       
            // play punch sound
            this.sound.play('hit')
+           this.miku.anims.play('punch');
+           this.affectNearbyClams();
+        }
+        if(Phaser.Input.Keyboard.JustDown(this.jumpKey) && (this.miku.body.touching.down || this.miku.body.blocked.down)) {
+            this.miku.setVelocityY(-400);
+            this.miku.setGravityY(500);
         }
 
-        // check for collisions
-        this.physics.world.collide(this.miku, this.clams, this.hitClam, null, this)
-        
+        if(this.miku.body.blocked.down || this.miku.body.touching.down) {
+            this.miku.setVelocityY(0);
+            this.miku.setGravityY(0);
+        }
     }
 
-    clamCollision(miku, clam) {
-        clam.destroyed = true
-
-
+    alternateSpawn() {
+        if(this.spawnClamNext) {
+            this.spawnClam();
+        } else {
+            this.spawnBanana();
+        }
+        this.spawnClamNext = !this.spawnClamNext;
     }
 
     spawnClam() {
@@ -76,35 +91,55 @@ class Play extends Phaser.Scene {
 
     }
 
+    spawnBanana() {
+        let y = this.sys.game.config.height / 2;
+        let banana = this.bananas.create(0, y, 'banana');
+
+        banana.setVelocityX(Phaser.Math.Between(200, 300));
+    }
+    affectNearbyClams() {
+        this.clams.getChildren().forEach(clam => {
+            let distance = Phaser.Math.Distance.Between(this.miku.x, this.miku.y, clam.x, clam.y);
+            if(distance <100) {
+                this.knockUpAndDestroyClam(clam);
+            }
+               
+        })
+    }
+
     hitClam(miku,clam) {
-        //when clam hits miku go to credit scene
-        // console.log("going to credit scene");
+        this.knockUpAndDestroyClam(clam);
         this.scene.start('EndScene');
     }
 
-    knockUpClosetClam() {
-        //knocks up closet clam to miku
-        let closetClam = this.findClosetClam();
-        if (closetClam) { 
-            closetClam.setVelocityY(-300); //knocks upwards
-            closetClam.setVelocityX(0); //stop the clam
-        }
+    jumpBanana(miku, banana) {
+        this.scene.start('EndScene');
     }
+
+    knockUpAndDestroyClam(clam) {
+        console.log('clam knocked up')
+        //knocks up closet clam to miku
+        clam.setVelocityY(-300);
+
+
+        this.time.delayedCall(100, () => {
+            clam.destroy();
+        }, null, this);
+        }
+
+
 
     findClosetClam () {
         let closetClam = null;
-        //iterate through clams to find closet to Miku
-        let clamsArray = this.clams.getChildren();
-
-        clamsArray.forEach(clam => {
-            //make sure clam is left of miku
-            if(clam.x < this.miku.x) {
-                //update it if clam is closer
-                if(!closetClam || (this.miku.x - clam.x < this.miku.x -closetClam.x)) {
-                    closetClam = clam;
-                }
+        let minDistance = Infinity;
+        this.clams.getChildren().forEach(clam => {
+            let distance = Phaser.Math.Distance.Between(this.miku.x, this.miku.y, clam.x, clam.y);
+            if(distance < minDistance) {
+                closetClam = clam;
+                minDistance = distance;
             }
         });
+                
         return closetClam; //return closest clam found
     }
 }

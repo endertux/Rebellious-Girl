@@ -4,6 +4,7 @@ class Credits extends Phaser.Scene {
     }
 
     create() {
+
         this.cameras.main.fadeIn(1000, 0, 0, 0);
 
         this.add.sprite(0,0, 'creditsBG').setOrigin(0, 0);
