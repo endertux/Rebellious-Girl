@@ -4,6 +4,8 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        //this.cameras.main.fadeIn(1000, 0, 0, 0);
+        
         this.add.sprite(0, 0,'playBackground').setOrigin(0, 0);
 
         //add miku onto right side of screen
@@ -51,7 +53,7 @@ class Play extends Phaser.Scene {
 
         //spacebar for miku to knock out clams
         this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        //up key to jump
+        //up key to hit banana
         this.upKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 
     }
@@ -93,10 +95,13 @@ class Play extends Phaser.Scene {
 
     hitClam(miku,clam) {
         this.knockUpAndDestroyClam(clam);
+        this.sound.play('ouch', {
+            volume: 1
+        })
         this.scene.start('EndScene');
     }
 
-    jumpBanana(miku, banana) {
+    hitBanana(miku, banana) {
         //this.scene.start('EndScene');
     }
 

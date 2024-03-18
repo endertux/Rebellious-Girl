@@ -26,6 +26,8 @@ class Load extends Phaser.Scene {
         this.load.audio('hit', './assets/SFX/263514__makofox__dm_punch-04.ogg')
         // https://pixabay.com/music/cartoons-anime-beginings-139797/
         this.load.audio('bgMusic', './assets/SFX/anime-beginings-139797.mp3')
+
+        this.load.audio('ouch', 'assets/SFX/misstake-101soundboards.mp3')
         
     }
 
