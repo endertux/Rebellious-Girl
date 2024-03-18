@@ -20,6 +20,8 @@ class End extends Phaser.Scene {
         this.add.text(this.sys.game.config.width / 2, baseY +verticalSpacing, 'Click M to go to Menu', textConfig).setOrigin(0.5,0.5);
         this.add.text(this.sys.game.config.width / 2, baseY + 2* verticalSpacing, 'Click right ARROW to go to Credits', textConfig).setOrigin(0.5,0.5);
 
+        this.add.sprite(0, 0,'gameover').setOrigin(0, 0);
+
         let mKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
         mKey.on('down', () => {
             this.scene.start('menuScene');

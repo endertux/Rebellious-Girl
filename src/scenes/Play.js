@@ -7,18 +7,14 @@ class Play extends Phaser.Scene {
         this.add.sprite(0, 0,'playBackground').setOrigin(0, 0);
 
         //add miku onto right side of screen
-        this.miku = this.physics.add.sprite(this.sys.game.config.width - 100, 300, 'mikuPunch')
+        this.miku = this.physics.add.sprite(this.sys.game.config.width - 100, this.sys.game.config.height / 1.8, 'mikuPunch');
 
-       
         // set scale to miku
         this.miku.setScale(0.3);
 
         // hit box size
         this.miku.body.setSize(80, 100);
         this.miku.body.setOffset(200, 150);
-        
-        this.miku.setGravityY(0);
-        this.miku.setCollideWorldBounds(true);
 
         // add clams
         this.clams = this.physics.add.group({
@@ -28,15 +24,21 @@ class Play extends Phaser.Scene {
 
         // add bananas
         this.bananas = this.physics.add.group({
-            velocityX: 150
+            velocityY: 150
         });
 
-        this.spawnClamNext = true;
 
-        //timer event to alternate spawns
+        //timer event to spawn clams
         this.time.addEvent({
             delay: 2000,
-            callback: this.alternateSpawn,
+            callback: this.spawnClam,
+            callbackScope: this,
+            loop: true
+        })
+        //spawn banana
+        this.time.addEvent({
+            delay: 3000,
+            callback: this.spawnBanana,
             callbackScope: this,
             loop: true
         })
@@ -49,8 +51,8 @@ class Play extends Phaser.Scene {
 
         //spacebar for miku to knock out clams
         this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-        // J key to jump
-        this.jumpKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J);
+        //up key to jump
+        this.upKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 
     }
 
@@ -62,25 +64,8 @@ class Play extends Phaser.Scene {
            this.miku.anims.play('punch');
            this.affectNearbyClams();
         }
-        if(Phaser.Input.Keyboard.JustDown(this.jumpKey) && (this.miku.body.touching.down || this.miku.body.blocked.down)) {
-            this.miku.setVelocityY(-400);
-            this.miku.setGravityY(500);
-        }
-
-        if(this.miku.body.blocked.down || this.miku.body.touching.down) {
-            this.miku.setVelocityY(0);
-            this.miku.setGravityY(0);
-        }
     }
 
-    alternateSpawn() {
-        if(this.spawnClamNext) {
-            this.spawnClam();
-        } else {
-            this.spawnBanana();
-        }
-        this.spawnClamNext = !this.spawnClamNext;
-    }
 
     spawnClam() {
         //clam should spawn at y position on left side
@@ -92,15 +77,14 @@ class Play extends Phaser.Scene {
     }
 
     spawnBanana() {
-        let y = this.sys.game.config.height / 2;
-        let banana = this.bananas.create(0, y, 'banana');
+        let banana = this.bananas.create(this.miku.x, 0, 'banana');
 
-        banana.setVelocityX(Phaser.Math.Between(200, 300));
+        banana.setVelocityY(Phaser.Math.Between(50, 100));
     }
     affectNearbyClams() {
         this.clams.getChildren().forEach(clam => {
             let distance = Phaser.Math.Distance.Between(this.miku.x, this.miku.y, clam.x, clam.y);
-            if(distance <100) {
+            if(distance < 400) {
                 this.knockUpAndDestroyClam(clam);
             }
                
@@ -113,7 +97,7 @@ class Play extends Phaser.Scene {
     }
 
     jumpBanana(miku, banana) {
-        this.scene.start('EndScene');
+        //this.scene.start('EndScene');
     }
 
     knockUpAndDestroyClam(clam) {

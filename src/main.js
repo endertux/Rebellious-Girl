@@ -9,8 +9,8 @@
 
 let config = {
     type: Phaser.AUTO,
-    width: 960,
-    height: 540,
+    width: 1000,
+    height: 700,
     scale: {
         autoCenter: Phaser.Scale.CENTER_BOTH
     },

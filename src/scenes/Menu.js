@@ -14,8 +14,17 @@ class Menu extends Phaser.Scene {
         //title 
         this.add.sprite(0,0, 'menuBackground').setOrigin(0,0);
 
-        this.bgMusic = this.sound.add('bgMusic', {volume: 0.5, loop: true});
-        this.bgMusic.play()
+        // BGM
+        this.bgMusic = this.sound.add('bgMusic', {volume: 0.1, loop: true})
+
+        if (!this.musicPlayed) {
+            this.bgMusic.play()
+            this.musicPlayed = true
+        }
+
+        if (this.musicPlayed && this.scene.isActive('playScene')) {
+            this.musicPlayed = false
+        }
 
 
         //Text for screen
