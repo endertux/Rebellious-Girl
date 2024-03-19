@@ -23,14 +23,14 @@ let config = {
             debug: true
         }
     },
-    scene: [ Load, Menu, Play, End, Credits ]
+    scene: [ Load, Menu, Play, HowToPlay, End, Credits ]
 }
 
 let game = new Phaser.Game(config)
-
+let globalHighScore = 0
 // set UI sizes
 let borderUISize = game.config.height / 15
 let borderPadding = borderUISize / 3
 
 // reserve keys
-let keyENTER, keySPACE, keyLEFT, keyRIGHT, KeyUP, keyJ
+let keyENTER, keySPACE, keyLEFT, keyRIGHT, KeyUP, keyJ, keyH

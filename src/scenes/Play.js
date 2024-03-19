@@ -1,6 +1,8 @@
 class Play extends Phaser.Scene {
     constructor() {
         super("playScene");
+        this.score = 0;
+        this.highScore = localStorage.getItem('highScore') ? parseInt(localStorage.getItem('highScore')) : 0;
     }
 
     create() {
@@ -10,6 +12,7 @@ class Play extends Phaser.Scene {
 
         //add miku onto right side of screen
         this.miku = this.physics.add.sprite(this.sys.game.config.width - 100, this.sys.game.config.height / 1.8, 'mikuPunch');
+        
 
         // set scale to miku
         this.miku.setScale(0.3);
@@ -56,6 +59,10 @@ class Play extends Phaser.Scene {
         //up key to hit banana
         this.upKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 
+        this.score = 0
+        this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '42px', fill: '#fff' })
+
+        this.highScoreText = this.add.text(this.sys.game.config.width -350, 16, 'High Score: ' + this.highScore, {fontSize: '42px', fill: '#FFF'})
     }
 
     update() {
@@ -65,6 +72,13 @@ class Play extends Phaser.Scene {
            this.sound.play('hit')
            this.miku.anims.play('punch');
            this.affectNearbyClams();
+           
+        }
+
+        if(Phaser.Input.Keyboard.JustDown(this.upKey)) {
+            this.sound.play('hit');
+            this.miku.anims.play('punchUP');
+            this.affectNearbyBananas();
         }
     }
 
@@ -92,17 +106,31 @@ class Play extends Phaser.Scene {
                
         })
     }
+    affectNearbyBananas() {
+        this.bananas.getChildren().forEach(banana => {
+            let distance = Phaser.Math.Distance.Between(this.miku.x, this.miku.y, banana.x, banana.y);
+            if(distance < 400) {
+                this.punchUpAndDestroyBanana(banana);
+            }
+        });
+    }
 
     hitClam(miku,clam) {
         this.knockUpAndDestroyClam(clam);
         this.sound.play('ouch', {
             volume: 1
         })
+        this.checkAndUpdateHighScore()
         this.scene.start('EndScene');
     }
 
     hitBanana(miku, banana) {
-        //this.scene.start('EndScene');
+        this.punchUpAndDestroyBanana(banana);
+        this.sound.play('ouch', {
+            volume:1
+        })
+        this.checkAndUpdateHighScore()
+        this.scene.start('EndScene');
     }
 
     knockUpAndDestroyClam(clam) {
@@ -114,9 +142,18 @@ class Play extends Phaser.Scene {
         this.time.delayedCall(100, () => {
             clam.destroy();
         }, null, this);
-        }
+        this.incrementScore(1);
+    }
 
+    punchUpAndDestroyBanana(banana) {
+        console.log('banana punched up')
+        banana.setVelocityY(-300);
 
+        this.time.delayedCall(100, () => {
+            banana.destroy();
+        }, null, this)
+        this.incrementScore(1);
+    }
 
     findClosetClam () {
         let closetClam = null;
@@ -131,4 +168,27 @@ class Play extends Phaser.Scene {
                 
         return closetClam; //return closest clam found
     }
+
+    //score function
+    incrementScore(amount) {
+        this.score += amount 
+        this.scoreText.setText(`Score: ${this.score}`)
+        if (this.score > globalHighScore) {
+            this.highScore = this.score;
+
+            this.highScoreText.setText('High Score: ' + this.highScore);
+
+            localStorage.setItem('highScore', this.highScore.toString());
+        }
+    }
+
+    checkAndUpdateHighScore() {
+        if(this.score > globalHighScore) {
+            console.log(`New high score: ${this.score}`)
+            globalHighScore = this.score
+            this.scoreText.setText('Score: ' + this.score)
+        }
+    }
+
+   
 }

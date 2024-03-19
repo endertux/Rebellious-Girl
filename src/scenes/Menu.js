@@ -33,8 +33,14 @@ class Menu extends Phaser.Scene {
             fill: '#40E0D0'
         }).setOrigin(0.5, -3);
 
+        let howToPlayText = this.add.text(this.cameras.main.centerX, startText.y + startText.height + 20, 'Press H for How To Play', {
+            font: '30px Arial',
+            fill: '#40E0D0'
+        }).setOrigin(0.5, -3.5);
+
         // define keys
         keyENTER = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
+        keyH = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H)
 
     }
 
@@ -42,6 +48,10 @@ class Menu extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyENTER)) {
             //play scene
             this.scene.start('playScene')
+        }
+
+        if(Phaser.Input.Keyboard.JustDown(keyH)) {
+            this.scene.start("howScene")
         }
         
     }
