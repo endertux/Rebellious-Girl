@@ -24,7 +24,9 @@ class End extends Phaser.Scene {
         }),
 
     })
+
     this.miku.anims.play('cry');
+    
     this.highScore = localStorage.getItem('highScore') ? localStorage.getItem('highScore') : '0';
         this.highScoreText = this.add.text(this.sys.game.config.width / 2, this.miku.y + this.miku.displayHeight, 'High Score: ' + this.highScore, { 
             fontSize: '32px', 

@@ -40,6 +40,7 @@ class Play extends Phaser.Scene {
             callbackScope: this,
             loop: true
         })
+        
         //spawn banana
         this.time.addEvent({
             delay: 3000,
@@ -83,15 +84,14 @@ class Play extends Phaser.Scene {
         }
     }
 
-
     spawnClam() {
         //clam should spawn from left side going towards miku
         let y = this.sys.game.config.height / 2;
         let clam = this.clams.create(0,y, 'clam');
-
         clam.setVelocityX(Phaser.Math.Between(200,300));
 
     }
+    
     //spawns banana from top going down to miku
     spawnBanana() {
         let banana = this.bananas.create(this.miku.x, 0, 'banana');
@@ -119,13 +119,13 @@ class Play extends Phaser.Scene {
             }
         });
     }
+    
     //if hit by clam end game or if you knock it plus 1 point
     hitClam(miku,clam) {
         this.knockUpAndDestroyClam(clam);
         this.sound.play('ouch', {
             volume: 1
         })
-        this.checkAndUpdateHighScore()
         this.scene.start('EndScene');
     }
     //if hit by banana end game and if you knock it plus 1 point
@@ -134,15 +134,12 @@ class Play extends Phaser.Scene {
         this.sound.play('ouch', {
             volume:1
         })
-        this.checkAndUpdateHighScore()
         this.scene.start('EndScene');
     }
 
     knockUpAndDestroyClam(clam) {
         //knocks up closet clam to miku
         clam.setVelocityY(-300);
-
-
         this.time.delayedCall(100, () => {
             clam.destroy();
         }, null, this);
@@ -152,7 +149,6 @@ class Play extends Phaser.Scene {
     punchUpAndDestroyBanana(banana) {
         //knocks up banana and increments score
         banana.setVelocityY(-300);
-
         this.time.delayedCall(100, () => {
             banana.destroy();
         }, null, this)
@@ -163,22 +159,10 @@ class Play extends Phaser.Scene {
     incrementScore(amount) {
         this.score += amount 
         this.scoreText.setText(`Score: ${this.score}`)
-        if (this.score > globalHighScore) {
+        if (this.score > this.highScore) {
             this.highScore = this.score;
-
             this.highScoreText.setText('High Score: ' + this.highScore);
-
             localStorage.setItem('highScore', this.highScore.toString());
         }
     }
-    // update highscore if it is higher
-    checkAndUpdateHighScore() {
-        if(this.score > globalHighScore) {
-            console.log(`New high score: ${this.score}`)
-            globalHighScore = this.score
-            this.scoreText.setText('Score: ' + this.score)
-        }
-    }
-
-   
 }
