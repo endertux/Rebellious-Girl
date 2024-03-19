@@ -159,20 +159,6 @@ class Play extends Phaser.Scene {
         this.incrementScore(1);
     }
 
-    findClosetClam () {
-        let closetClam = null;
-        let minDistance = Infinity;
-        this.clams.getChildren().forEach(clam => {
-            let distance = Phaser.Math.Distance.Between(this.miku.x, this.miku.y, clam.x, clam.y);
-            if(distance < minDistance) {
-                closetClam = clam;
-                minDistance = distance;
-            }
-        });
-                
-        return closetClam; //return closest clam found
-    }
-
     //score function
     incrementScore(amount) {
         this.score += amount 
