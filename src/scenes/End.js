@@ -30,12 +30,12 @@ class End extends Phaser.Scene {
             fontSize: '32px', 
             fill: '#f449a4' 
         }).setOrigin(0.5);
-
+        //m is an input
         let mKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
         mKey.on('down', () => {
             this.scene.start('menuScene');
         });
-
+        //right arrow is an input
         let rightArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         rightArrow.on('down', () => {
             this.scene.start('creditsScene');

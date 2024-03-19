@@ -4,7 +4,7 @@ class Credits extends Phaser.Scene {
     }
 
     create() {
-
+        //camera fade in
         this.cameras.main.fadeIn(1000, 0, 0, 0);
 
         this.add.sprite(0,0, 'creditsBG').setOrigin(0, 0);
@@ -24,28 +24,28 @@ class Credits extends Phaser.Scene {
         let baseY = 200;
     
         // Developer credit
-        this.add.text(this.scale.width / 2, baseY, 'Developer: Jacob Ganburged', {
+        this.add.text(this.scale.width / 2, baseY, 'Developer: Jacob Ganburged, Helwa, Halloum', {
             fontFamily: 'Fantasy',
             fontSize: '24px',
             fill: '#fff'
         }).setOrigin(0.5);
     
         // Artist credit
-        this.add.text(this.scale.width / 2, baseY + verticalSpacing, 'Artist: Jacob Ganburged', {
+        this.add.text(this.scale.width / 2, baseY + verticalSpacing, 'Artist: Helwa, Halloum, Jacob Ganburged', {
             fontFamily: 'Fantasy',
             fontSize: '24px',
             fill: '#fff'
         }).setOrigin(0.5);
     
-        // SFX credits
-        this.add.text(this.scale.width / 2, baseY + 2 * verticalSpacing, 'SFX: Eric Cartman - Wrecking Ball', {
+        // BGM credits
+        this.add.text(this.scale.width / 2, baseY + 2 * verticalSpacing, 'BGM: PHANTASTICBEATS - Anime Beginings', {
             fontFamily: 'Fantasy',
             fontSize: '24px',
             fill: '#fff'
         }).setOrigin(0.5);
     
         // Sound effect credits
-        this.add.text(this.scale.width / 2, baseY + 3 * verticalSpacing, 'Sound Effects: From Pixabay.com', {
+        this.add.text(this.scale.width / 2, baseY + 3 * verticalSpacing, 'Sound Effects: MakoFox', {
             fontFamily: 'Fantasy',
             fontSize: '24px',
             fill: '#fff'

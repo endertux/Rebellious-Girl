@@ -14,6 +14,8 @@ class Menu extends Phaser.Scene {
         //title 
         this.add.sprite(0,0, 'menuBackground').setOrigin(0,0);
 
+        //camera fade in
+        this.cameras.main.fadeIn(1000, 0, 0, 0)
         // BGM
         this.bgMusic = this.sound.add('bgMusic', {volume: 0.1, loop: true})
 

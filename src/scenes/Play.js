@@ -58,10 +58,11 @@ class Play extends Phaser.Scene {
         this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         //up key to hit banana
         this.upKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
-
+        //score starts 0
         this.score = 0
+        //score text
         this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '42px', fill: '#fff' })
-
+        //highscore text
         this.highScoreText = this.add.text(this.sys.game.config.width -350, 16, 'High Score: ' + this.highScore, {fontSize: '42px', fill: '#FFF'})
     }
 
@@ -74,7 +75,7 @@ class Play extends Phaser.Scene {
            this.affectNearbyClams();
            
         }
-
+        //check if upkey is clicked
         if(Phaser.Input.Keyboard.JustDown(this.upKey)) {
             this.sound.play('hit');
             this.miku.anims.play('punchUP');
@@ -84,19 +85,21 @@ class Play extends Phaser.Scene {
 
 
     spawnClam() {
-        //clam should spawn at y position on left side
+        //clam should spawn from left side going towards miku
         let y = this.sys.game.config.height / 2;
         let clam = this.clams.create(0,y, 'clam');
 
         clam.setVelocityX(Phaser.Math.Between(200,300));
 
     }
-
+    //spawns banana from top going down to miku
     spawnBanana() {
         let banana = this.bananas.create(this.miku.x, 0, 'banana');
 
         banana.setVelocityY(Phaser.Math.Between(50, 100));
     }
+
+    //destroying or knocking up clams
     affectNearbyClams() {
         this.clams.getChildren().forEach(clam => {
             let distance = Phaser.Math.Distance.Between(this.miku.x, this.miku.y, clam.x, clam.y);
@@ -106,6 +109,8 @@ class Play extends Phaser.Scene {
                
         })
     }
+
+    //destroying or knocking up bananas
     affectNearbyBananas() {
         this.bananas.getChildren().forEach(banana => {
             let distance = Phaser.Math.Distance.Between(this.miku.x, this.miku.y, banana.x, banana.y);
@@ -114,7 +119,7 @@ class Play extends Phaser.Scene {
             }
         });
     }
-
+    //if hit by clam end game or if you knock it plus 1 point
     hitClam(miku,clam) {
         this.knockUpAndDestroyClam(clam);
         this.sound.play('ouch', {
@@ -123,7 +128,7 @@ class Play extends Phaser.Scene {
         this.checkAndUpdateHighScore()
         this.scene.start('EndScene');
     }
-
+    //if hit by banana end game and if you knock it plus 1 point
     hitBanana(miku, banana) {
         this.punchUpAndDestroyBanana(banana);
         this.sound.play('ouch', {
@@ -134,7 +139,6 @@ class Play extends Phaser.Scene {
     }
 
     knockUpAndDestroyClam(clam) {
-        console.log('clam knocked up')
         //knocks up closet clam to miku
         clam.setVelocityY(-300);
 
@@ -146,7 +150,7 @@ class Play extends Phaser.Scene {
     }
 
     punchUpAndDestroyBanana(banana) {
-        console.log('banana punched up')
+        //knocks up banana and increments score
         banana.setVelocityY(-300);
 
         this.time.delayedCall(100, () => {
@@ -181,7 +185,7 @@ class Play extends Phaser.Scene {
             localStorage.setItem('highScore', this.highScore.toString());
         }
     }
-
+    // update highscore if it is higher
     checkAndUpdateHighScore() {
         if(this.score > globalHighScore) {
             console.log(`New high score: ${this.score}`)
