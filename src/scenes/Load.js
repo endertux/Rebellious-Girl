@@ -26,7 +26,7 @@ class Load extends Phaser.Scene {
         })
 
         // miku punching up anims
-        this.load.spritesheet('mikuUP', './assets/miku_anims_up.png', {
+        this.load.spritesheet('mikuUP', './assets/Miku_punch_up.png', {
             frameWidth: 460,
             frameHeight: 613
         })
